@@ -4,34 +4,36 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class TimeTest {
 
-	@Test
-	void testGetTotalSeconds() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetSeconds() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetTotalMinutes() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetTotalHours() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	void testGetMilliSeconds()
-	{
-		fail("Not yet implemented");
-	}
+//	@Test
+//	void testGetTotalSeconds() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testGetSeconds() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testGetTotalMinutes() {
+//		fail("Not yet implemented");
+//	}
+//
+//	@Test
+//	void testGetTotalHours() {
+//		fail("Not yet implemented");
+//	}
+//	
+//	@Test
+//	void testGetMilliSeconds()
+//	{
+//		fail("Not yet implemented");
+//	}
 	
 	@Test
 	void testGetMilliSecondsGood()
@@ -65,9 +67,7 @@ class TimeTest {
 	@Test
 	public void testGetTotalSecondsBoundary() 
 	{
-	int seconds = 
-	Time.getTotalSeconds("05:05:05");
-	assertTrue("The seconds were not calculated  properly", seconds>0 && seconds>19305);
+		assertThrows(NumberFormatException.class, ()->{Time.getTotalSeconds("05:0:005");});
 	}
 	
 	@Test
@@ -84,12 +84,11 @@ class TimeTest {
 	assertTrue("The Hours were not calculated  properly", hours==5);
 	}
 	
-	@Test
-	public void testGetTotalHoursBoundary() 
-	{
-	int hours = 
-	Time.getTotalHours("05:05:05");
-	assertTrue("The Hours were not calculated  properly", hours>0 && hours<5);
+	@ParameterizedTest
+	@ValueSource(strings = { "05:00:00", "05:15:15", "05:59:59" })
+	public void testGetTotalHoursBoundry(String value) {
+		int hr = Time.getTotalHours(value);
+		assertTrue("Hours boundry boundry not correct", hr == 5);
 	}
 	
 	@Test
@@ -103,21 +102,19 @@ class TimeTest {
 	{
 	int seconds = 
 	Time.getTotalMinutes("05:05:05");
-	assertTrue("The Minutes were not calculated  properly", seconds==18305);
+	assertTrue("The Minutes were not calculated  properly", seconds==5);
 	}
 	
 	@Test
 	public void testGetTotalMinutesBoundary() 
 	{
-	int seconds = 
-	Time.getTotalMinutes("05:05:05");
-	assertTrue("The Minutes were not calculated  properly", seconds>0 && seconds> 10);
+		assertThrows(NumberFormatException.class, ()->{Time.getTotalMinutes("05:0:005");});
 	}
 	
 	@Test
 	public void testGetTotalMinutesBad() 
 	{
-	assertThrows(StringIndexOutOfBoundsException.class, ()-> {Time.getTotalMinutes("10:00");});
+		assertThrows(NumberFormatException.class, ()->{Time.getTotalMinutes("05:0:005");});
 	}
 	
 	//public void int getMilliSeconds(String time)
